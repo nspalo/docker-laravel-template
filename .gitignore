@@ -1,2 +1,5 @@
 # Environment
 /.idea
+
+# MySQL
+/docker/mysql/

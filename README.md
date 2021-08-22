@@ -5,5 +5,4 @@
 ## Table of Contents
 | Branch Name  | What's Inside |
 | ------------- | ------------- |
-| master  | Documentation  |
 | [webstack/v1.0.0](https://github.com/nspalo/docker-study/tree/webstack/v1.0.0) | nginx:stable-alpine, mysql:5.7.22, php:7.2-fpm-alpine |

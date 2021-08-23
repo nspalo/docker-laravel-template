@@ -19,3 +19,4 @@
 | ------------- | ------------- |
 | webstack/v1.0.0 | nginx:stable-alpine, mysql:5.7.22, php:7.2-fpm-alpine |
 | webstack/v2.0.0 | nginx:stable-alpine, mysql:5.7.22, php:7.4-fpm-alpine |
+| webstack/v2.1.0 | nginx:stable-alpine, mysql:5.7.22, php:7.4-fpm-alpine, laravel 5.8 |

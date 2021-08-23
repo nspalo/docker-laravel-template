@@ -1,0 +1,54 @@
+version: '3'
+
+networks:
+  web-app:
+
+services:
+  # Container: NginX
+  nginx:
+    networks:
+      - web-app
+    container_name: nginx
+    image: library/nginx:stable-alpine
+    ports:
+      - "9100:80"
+    volumes:
+      - ../../src:/var/www/html
+      - ../../docker/containers/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+
+  # Container: MySQL
+  mysql:
+    networks:
+      - web-app
+    container_name: mysql
+    image: library/mysql:5.7.22
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    volumes:
+      - ../../docker/containers/mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: db_docker_study
+      MYSQL_USER: dbUserDev
+      MYSQL_PASSWORD: dbUserDev123
+      MYSQL_ROOT_PASSWORD: dbUserRoot123
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+
+  # Container: PHP
+  php:
+    networks:
+      - web-app
+    container_name: php
+    build:
+      context: ./
+      dockerfile: ../../docker/containers/Dockerfile
+    image: php:php7.2-fpm-alpine
+    ports:
+      - "9000:9000"
+    volumes:
+      - ../../src:/var/www/html

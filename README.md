@@ -12,7 +12,7 @@
 - MySQL 5.7
     - mysql:5.7.22
 - PHP 7
-    - php:7.2-fpm-alpine
+    - php:7.4-fpm-alpine
 
 ## Table of Contents
 | Branch Name  | What's Inside |

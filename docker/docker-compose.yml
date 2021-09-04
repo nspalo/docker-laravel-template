@@ -46,8 +46,8 @@ services:
     container_name: php
     build:
       context: .
-      dockerfile: Dockerfile
-    image: php:php7.4-fpm-alpine
+      dockerfile: containers/php/Dockerfile
+    image: php:php-7.4-fpm-alpine
     ports:
       - "9000:9000"
     volumes:
@@ -81,8 +81,8 @@ services:
     container_name: artisan
     build:
       context: .
-      dockerfile: Dockerfile
-    image: artisan:artisan-alpine
+      dockerfile: containers/php/Dockerfile
+    image: artisan:laravel-5.8
     env_file:
       - ../docker/environments/${APP_ENV}.env
     working_dir: /var/www/html

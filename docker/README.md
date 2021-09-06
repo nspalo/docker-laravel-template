@@ -120,3 +120,18 @@ docker-compose --env-file docker/environments/local.env -f docker/docker-compose
 // Check if index.php exists
 docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml exec nginx ls /var/www/html/public
 ```
+
+### Importing existing database data
+```
+// Copy .sql file for import to the container
+// docker cp <PATH_OF_FILE>/<SQL_FILE>.sql <CONTAINER_NAME>:./<SQL_FILE>.sql
+docker cp docker/volumes/mysql/file.sql mysql:file.sql
+
+// Then login to mysql
+// docker exec -it <CONTAINER_NAME> mysql -u<DB_USERNAME> -p<DB_PASSWORD>
+docker exec -it mysql mysql -udbUserDev -pdbUserDev123
+
+// Inside mysql, import the data
+// source <SQL_FILE>.sql
+mysql> source file.sql
+```

@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 networks:
   web-app:
@@ -9,7 +9,10 @@ services:
     networks:
       - web-app
     container_name: nginx
-    image: library/nginx:stable-alpine
+    build:
+      context: .
+      dockerfile: containers/nginx/Dockerfile
+    image: nginx:nginx-stable-alpine
     ports:
       - "9100:80"
     volumes:
@@ -24,7 +27,10 @@ services:
     networks:
       - web-app
     container_name: mysql
-    image: library/mysql:5.7.22
+    build:
+      context: .
+      dockerfile: containers/mysql/Dockerfile
+    image: mysql:mysql-5.7.22
     restart: unless-stopped
     tty: true
     ports:
@@ -58,7 +64,11 @@ services:
     networks:
       - web-app
     container_name: composer
-    image: composer:2.1.5
+    build:
+      context: .
+      dockerfile: containers/composer/Dockerfile
+    image: composer:composer-2.1.5
+    #image: composer:2.1.5
     working_dir: /var/www/html
     volumes:
       - "${PATH_PROJECT_SOURCE}:/var/www/html"

@@ -72,6 +72,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - "${PATH_PROJECT_SOURCE}:/var/www/html"
+    entrypoint: ['composer']
 
   # Container: NPM
   npm:

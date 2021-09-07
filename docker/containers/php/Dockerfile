@@ -2,4 +2,6 @@
 FROM php:7.4-fpm-alpine
 
 # Install PHP Extension
-RUN docker-php-ext-install pdo pdo_mysql
+RUN apk --no-cache add zip libzip-dev \
+    && docker-php-ext-configure zip \
+    && docker-php-ext-install zip pdo pdo_mysql

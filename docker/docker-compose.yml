@@ -68,7 +68,6 @@ services:
       context: .
       dockerfile: containers/composer/Dockerfile
     image: composer:composer-2.1.5
-    #image: composer:2.1.5
     working_dir: /var/www/html
     volumes:
       - "${PATH_PROJECT_SOURCE}:/var/www/html"

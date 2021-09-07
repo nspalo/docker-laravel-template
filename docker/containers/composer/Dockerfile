@@ -1,6 +1,10 @@
-# Install Composer
-FROM composer:2.1.5
+# Pull from PHP from previous Dockerfile - php/Dockerfile
+# - see docker/docker-compose.yml for more info
+# - use the image tag php:php-7.4-fpm-alpine
+FROM php:php-7.4-fpm-alpine
 
-# Copy PHP from previous Dockerfile with a tag of php:php-7.4-fpm-alpine
-# See docker/docker-compose.yml
-COPY --from=php:php-7.4-fpm-alpine  /usr/local/bin/php /usr/local/bin/php
+# Install Composer 2.1.5
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.1.5
+
+# Add composer bin files path to environment variable
+RUN export PATH=$PATH":/usr/bin"

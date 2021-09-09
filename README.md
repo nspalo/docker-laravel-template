@@ -1,6 +1,6 @@
 # Docker Laravel Template
-> This is a simple repo to learn the basics in setting up a
-> *Web development environment with NginX, MySQL, PHP, and Laravel inside a __Docker__ container*.
+> This is a simple project that aims to build a template for a 
+> *Dockerize web development environment with NginX, MySQL, PHP, and Laravel*.
 
 ## Web Stack
 **Docker containers**

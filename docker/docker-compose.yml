@@ -35,13 +35,15 @@ services:
     tty: true
     ports:
       - "3306:3306"
+    env_file:
+      - ${PATH_ENV_CONFIGS}/${SYS_ENV}.env
     volumes:
-      - "${DB_MYSQL_VOLUME}:/var/lib/mysql"
+      - "${DB_VOLUME}:/var/lib/mysql"
     environment:
-      MYSQL_DATABASE: "${DB_MYSQL_DATABASE}"
-      MYSQL_USER: "${DB_MYSQL_USER}"
-      MYSQL_PASSWORD: "${DB_MYSQL_PASSWORD}"
-      MYSQL_ROOT_PASSWORD: "${DB_MYSQL_ROOT_PASSWORD}"
+#      MYSQL_DATABASE: "${DB_NAME}"
+#      MYSQL_USER: "${DB_USERNAME}"
+#      MYSQL_PASSWORD: "${DB_PASSWORD}"
+#      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD_ROOT}"
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
 
@@ -81,7 +83,7 @@ services:
     image: node:16-alpine
     working_dir: /var/www/html
     volumes:
-        - "${PATH_PROJECT_SOURCE}:/var/www/html"
+      - "${PATH_PROJECT_SOURCE}:/var/www/html"
     entrypoint: ['npm']
 
   # Container: Artisan
@@ -94,10 +96,11 @@ services:
       dockerfile: containers/php/Dockerfile
     image: artisan:laravel-5.8
     env_file:
-      - ../docker/environments/${APP_ENV}.env
+      - ${PATH_ENV_CONFIGS}/config.env
+      - ${PATH_ENV_CONFIGS}/${SYS_ENV}.env
     working_dir: /var/www/html
     volumes:
-        - "${PATH_PROJECT_SOURCE}:/var/www/html"
+      - "${PATH_PROJECT_SOURCE}:/var/www/html"
     depends_on:
       - mysql
     entrypoint: ['/var/www/html/artisan']

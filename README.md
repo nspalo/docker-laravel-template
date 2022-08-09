@@ -19,11 +19,11 @@
   
 ## Set Up Procedure
 > **Note:**  
-> In this structure, we always need to add few flags for our commands to work.
-> --env-file flag then the path to the environment config we want to load.
-> -f flag then the path to the docker compose yaml file.  
-> which in our case it is
-> - `--env-file docker/environments/local.env`
+> In this structure, we always need to add few flags for our commands to work. 
+> - --env-file flag then the path to the environment config we want to load. 
+> - -f flag then the path to the docker compose yaml file.  
+> which in our case it is:
+> - `--env-file docker/environments/config.env`
 > - `-f docker/docker-compose.yml`
 >
 > _See: `docker/docker-compose.yml` for the list of service containers_
@@ -31,36 +31,40 @@
 ### Step 0: Environment File Config
 Note:  
 _This will soon be updated and improved to support multi-environment set up and load the correct file automatically  
-So for now, its just_ `local.env`. To set up your configs and credentials for this file.    
-_see:_ `docker/environment/local.env`. Take note that some values in this file will be use later on by laravel `.env` file.
+So for now, its just_ `local.env`.    
+- _see:_ `docker/environments/local.env` to set up your configs and credentials for this file  
+  - Take note that some values in this file will be use later on by laravel `.env` and our `config.env` file.  
+
+The generic `.env` file `config.env` should be always be use in the command and use the variable `SYS_ENV` to set the specific environment file configuration.
+- _see:_ `docker/environments/config.env`
 
 ### Step 1: Service containers - Building and Starting
 ```
 // Building the services/containers
-> docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml build
+> docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml build
 
 // Starting the services/containers
 // - optionally add the -d (detach) flag to run in the background
-> docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml up -d
+> docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml up -d
 
 // Or do a one-liner command for the build and start process
-> docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml up -d --build
+> docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml up -d --build
 ```
 
 ### Step 2 - A: Packages and Dependencies
 > **_Note:_** for a specific service, use the container name  
 > **_Format:_** docker-compose --env-file <_EnvFile_> -f <_DockerComposeYamlFile_> up <_ContainerName_>     
-> **_E.g.:_** `docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml up php`
+> **_E.g.:_** `docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml up php`
 > 
 ```
 // Running composer install
-> docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml run --rm composer install
+> docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml run --rm composer install
 
 // Running artisan migrate
-> docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml run --rm artisan migrate
+> docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml run --rm artisan migrate
 
 // Running npm
-> docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml run --rm npm install
+> docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml run --rm npm install
 ```
 
 ### Step 2 - B: Importing existing database data

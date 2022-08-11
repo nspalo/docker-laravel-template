@@ -12,7 +12,7 @@
 > --env-file flag then the path to the environment config we want to load.
 > -f flag then the path to the docker compose yaml file.  
 > which in our case it is
-> - `--env-file docker/environments/local.env`   
+> - `--env-file docker/environments/config.env`   
 > - `-f docker/docker-compose.yml`
 > 
 > _See: `docker/docker-compose.yml` for the list of service containers_
@@ -47,27 +47,27 @@ docker system prune -a
 ### Building the service containers
 ```
 // Build the services/containers
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml build
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml build
 ```
 
 ### Starting the service
 ```
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml up
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml up
 
 // add the -d (detach) option to run in the background
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml up -d
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml up -d
 
 // Can also do a one-liner build and start
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml up -d --build
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml up -d --build
 
 // use the container name for a specific service  
 // docker-compose up <_ContainerName_>
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml up php
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml up php
 ```
 
 ### Stopping the service
 ```
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml down -v
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml down -v
 
 // -v, --volumes Remove named volumes declared in the `volumes`
 //                section of the Compose file and anonymous volumes
@@ -75,15 +75,15 @@ docker-compose --env-file docker/environments/local.env -f docker/docker-compose
 
 // to stop a specific service, use the stop command followed by th container name  
 // docker-compose stop <_ContainerName_>
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml stop mysql
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml stop mysql
 ```
 
 ### Restarting the service
 ```
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml restart
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml restart
 
 // use the container name for a specific service
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml restart php
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml restart php
 ```
 
 ### Running commands inside a service container
@@ -98,13 +98,13 @@ docker-compose --env-file docker/environments/local.env -f docker/docker-compose
 // Note: we still need to use -f flag and the path to our docker compose yamel file
 
 // Running composer
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml run --rm composer dump-autoload
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml run --rm composer dump-autoload
 
 // Running npm
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml run --rm npm install
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml run --rm npm install
 
 // Running artisan command
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml run --rm artisan migrate
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml run --rm artisan migrate
 ```
 
 ### Running arbitrary commands inside a service container (OLD/DEPRECATED)
@@ -115,10 +115,10 @@ docker-compose --env-file docker/environments/local.env -f docker/docker-compose
 // Use docker-compose exec to run command inside the container.
 // - e.g.: To run php artisan migrate commad 
 // - format: docker-compose exec <_ContainerName_> php <_PathToArtisan_> migrate
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml exec php php /var/www/html/artisan migrate
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml exec php php /var/www/html/artisan migrate
 
 // Check if index.php exists
-docker-compose --env-file docker/environments/local.env -f docker/docker-compose.yml exec nginx ls /var/www/html/public
+docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml exec nginx ls /var/www/html/public
 ```
 
 ### Importing existing database data

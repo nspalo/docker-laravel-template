@@ -9,7 +9,7 @@
 - mysql
   - MySQL 5.7.22
 - php
-  - PHP 7.4 fpm-alpine
+  - PHP 8.1 fpm-alpine
 - composer
   - Composer 2.1.5
 - npm

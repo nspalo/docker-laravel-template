@@ -61,7 +61,7 @@ services:
     build:
       context: .
       dockerfile: containers/php/Dockerfile
-    image: php:php-7.4-fpm-alpine
+    image: php:php-8.1-fpm-alpine
     ports:
       - "9000:9000"
     volumes:

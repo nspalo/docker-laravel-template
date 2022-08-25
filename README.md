@@ -15,8 +15,7 @@
 - npm
   - Node 16 alpine
 - artisan
-  - No Laravel - Open to install desired version  
-    - _NOTE: With laravel 6 and above, some configurations might need adjustments._ 
+  - Laravel 5.8 
   
 ## Set Up Procedure
 > **Note:**  
@@ -38,17 +37,6 @@ For now, its just_ `local.env` but feel free to add more depending on the need l
 
 The generic `.env` file `config.env` should always be used in the command and should use the variable `SYS_ENV` to set the specific environment file configuration.
 - _see:_ `docker/environments/config.env`
-
-### Step 0.5: Laravel Installation 
-> **_Note:_** Since this is a No Laravel, in this step we will install a selected laravel version.   
-> _DO NOT REPLACE the "src" directory or if needed, edit the config file and change the value of `PATH_PROJECT_SOURCE` variable._     
-> **_Format:_** composer create-project --prefer-dist laravel/laravel src <_LaravelVersion_>  
-> **_E.g.:_** `composer create-project --prefer-dist laravel/laravel src "5.6.*"`
-```
-// Installing selected Laravel version
-// The command below will install laravel 5.8 to src directory
-> composer create-project --prefer-dist laravel/laravel src "5.8.*"
-```
 
 ### Step 1: Service containers - Building and Starting
 ```

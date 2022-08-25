@@ -7,9 +7,9 @@
 - nginx
   - NginX stable-alpine
 - mysql
-  - MySQL 5.7.22
+  - MySQL 8.0.30
 - php
-  - PHP 7.4 fpm-alpine
+  - PHP 8.1 fpm-alpine
 - composer
   - Composer 2.1.5
 - npm

@@ -4,7 +4,9 @@ networks:
   web-app:
 
 services:
-  # Container: NginX
+  # +----------------------+ #
+  # | Container: NginX     | #
+  # +----------------------+ #
   nginx:
     networks:
       - web-app
@@ -22,7 +24,9 @@ services:
       - php
       - mysql
 
-  # Container: MySQL
+  # +----------------------+ #
+  # | Container: MySQL     | #
+  # +----------------------+ #
   mysql:
     networks:
       - web-app
@@ -47,7 +51,9 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
 
-  # Container: PHP
+  # +----------------------+ #
+  # | Container: PHP       | #
+  # +----------------------+ #
   php:
     networks:
       - web-app
@@ -61,7 +67,9 @@ services:
     volumes:
       - "${PATH_PROJECT_SOURCE}:/var/www/html"
 
-  # Container: Composer
+  # +----------------------+ #
+  # | Container: Composer  | #
+  # +----------------------+ #
   composer:
     networks:
       - web-app
@@ -75,7 +83,9 @@ services:
       - "${PATH_PROJECT_SOURCE}:/var/www/html"
     entrypoint: ['composer']
 
-  # Container: NPM
+  # +----------------------+ #
+  # | Container: NPM       | #
+  # +----------------------+ #
   npm:
     networks:
       - web-app
@@ -86,7 +96,9 @@ services:
       - "${PATH_PROJECT_SOURCE}:/var/www/html"
     entrypoint: ['npm']
 
-  # Container: Artisan
+  # +----------------------+ #
+  # | Container: Artisan   | #
+  # +----------------------+ #
   artisan:
     networks:
       - web-app
@@ -94,7 +106,7 @@ services:
     build:
       context: .
       dockerfile: containers/php/Dockerfile
-    image: artisan:laravel-5.8
+    image: artisan:laravel
     env_file:
       - ${PATH_ENV_CONFIGS}/config.env
       - ${PATH_ENV_CONFIGS}/${SYS_ENV}.env

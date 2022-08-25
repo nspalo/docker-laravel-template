@@ -15,7 +15,8 @@
 - npm
   - Node 16 alpine
 - artisan
-  - Laravel5.8
+  - No Laravel - Open to install desired version  
+    - _NOTE: With laravel 6 and above, some configurations might need adjustments._ 
   
 ## Set Up Procedure
 > **Note:**  
@@ -28,15 +29,26 @@
 >
 > _See: `docker/docker-compose.yml` for the list of service containers_
  
-### Step 0: Environment File Config
+### Step 0: Environment File Configurations
 Note:  
-_This will soon be updated and improved to support multi-environment set up and load the correct file automatically  
-So for now, its just_ `local.env`.    
-- _see:_ `docker/environments/local.env` to set up your configs and credentials for this file  
+_In here we will use a file with `.env` extension to support multi-environment set up and load the correct variable values automatically. 
+For now, its just_ `local.env` but feel free to add more depending on the need like `staging.env`, `uat.env`, `test.env`, `prod.env` and the likes.    
+- _see:_ `docker/environments/local.env` to set up your configs and credentials for this file.  
   - Take note that some values in this file will be use later on by laravel `.env` and our `config.env` file.  
 
-The generic `.env` file `config.env` should be always be use in the command and use the variable `SYS_ENV` to set the specific environment file configuration.
+The generic `.env` file `config.env` should always be used in the command and should use the variable `SYS_ENV` to set the specific environment file configuration.
 - _see:_ `docker/environments/config.env`
+
+### Step 0.5: Laravel Installation 
+> **_Note:_** Since this is a No Laravel, in this step we will install a selected laravel version.   
+> _DO NOT REPLACE the "src" directory or if needed, edit the config file and change the value of `PATH_PROJECT_SOURCE` variable._     
+> **_Format:_** composer create-project --prefer-dist laravel/laravel src <_LaravelVersion_>  
+> **_E.g.:_** `composer create-project --prefer-dist laravel/laravel src "5.6.*"`
+```
+// Installing selected Laravel version
+// The command below will install laravel 5.8 to src directory
+> composer create-project --prefer-dist laravel/laravel src "5.8.*"
+```
 
 ### Step 1: Service containers - Building and Starting
 ```

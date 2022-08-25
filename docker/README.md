@@ -44,6 +44,12 @@ docker rmi -f $(docker images -q)
 docker system prune -a
 ```
 
+### Laravel Installation
+```
+// The command below will install laravel 5.8 to src directory
+> composer create-project --prefer-dist laravel/laravel src "5.8.*"
+```
+
 ### Building the service containers
 ```
 // Build the services/containers

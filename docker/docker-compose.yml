@@ -94,7 +94,7 @@ services:
     build:
       context: .
       dockerfile: containers/php/Dockerfile
-    image: artisan:laravel-5.8
+    image: artisan:laravel
     env_file:
       - ${PATH_ENV_CONFIGS}/config.env
       - ${PATH_ENV_CONFIGS}/${SYS_ENV}.env

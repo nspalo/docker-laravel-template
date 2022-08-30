@@ -15,7 +15,7 @@
 - npm
   - Node 16 alpine
 - artisan
-  - Laravel 5.8 
+  - Laravel ^8.0
   
 ## Set Up Procedure
 > **Note:**  
@@ -38,7 +38,7 @@ For now, its just_ `local.env` but feel free to add more depending on the need l
 The generic `.env` file `config.env` should always be used in the command and should use the variable `SYS_ENV` to set the specific environment file configuration.
 - _see:_ `docker/environments/config.env`
 
-### Step 1: Service containers - Building and Starting
+  ### Step 1: Service containers - Building and Starting
 ```
 // Building the services/containers
 > docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml build

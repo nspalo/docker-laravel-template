@@ -1,5 +1,30 @@
 # Environment
 /.idea
+/.vagrant
+.phpunit.result.cache
+npm-debug.log
+yarn-error.log
+Homestead.yaml
+Homestead.json
+node_modules/
+/src/storage/*.key
+/src/vendor/
+
+# Laravel 4 specific
+/src/app/storage/
+/src/bootstrap/compiled.php
+/src/bootstrap/cache
+
+# Laravel 5 & Lumen specific
+/src/public/hot
+/src/public/storage
+
+# Laravel 5 & Lumen specific with changed public path
+/src/public_html/hot
+/src/public_html/storage
 
 # MySQL
 /docker/volumes/mysql/
+
+# Project
+.env

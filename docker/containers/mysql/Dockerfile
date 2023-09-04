@@ -1,2 +1,2 @@
 # Install MySQL
-FROM library/mysql:8.0.30
+FROM library/mysql:5.7.22

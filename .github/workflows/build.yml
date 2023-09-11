@@ -7,26 +7,33 @@ on:
     branches: [ "master", "development" ]
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v3
-
     - name: Docker login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_KEY: ${{ secrets.DOCKER_KEY }}
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_KEY
+      
 
     # Build Docker Images
     - name: Build the Docker image
-      run: ./scripts/build.sh
+      run: |
+        chmod +x ./scripts/build.sh
+        ./scripts/build.sh
       
     - name: Start
-      run: ./scripts/up.sh -d
+      run: |
+        chmod +x ./scripts/up.sh
+        ./scripts/up.sh -d
 
-    - name: Composer
-      run: ./scripts/composer.sh install
+    - name: Composer      
+      run: |
+        chmod +x ./scripts/composer.sh
+        ./scripts/composer.sh install
       

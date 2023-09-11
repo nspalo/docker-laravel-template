@@ -13,6 +13,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_KEY: ${{ secrets.DOCKER_KEY }}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_KEY
+
     # Build Docker Images
     - name: Build the Docker image
       run: ./scripts/build.sh

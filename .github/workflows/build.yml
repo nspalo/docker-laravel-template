@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master", "development" ]
+  pull_request:
+    branches: [ "master", "development" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    # Build Docker Images
+    - name: Build the Docker image
+      run: ./scripts/build.sh
+      
+    - name: Start
+      run: ./scripts/up.sh -d
+
+    - name: Composer
+      run: ./scripts/composer.sh install
+      

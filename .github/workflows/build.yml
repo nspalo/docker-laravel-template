@@ -19,21 +19,16 @@ jobs:
         DOCKER_KEY: ${{ secrets.DOCKER_KEY }}
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_KEY
-      
 
+    - name: Scripts
+      run: chmod +x -R ./scripts/*.sh
     # Build Docker Images
     - name: Build the Docker image
-      run: |
-        chmod +x ./scripts/build.sh
-        ./scripts/build.sh
-      
+      run: ./scripts/build.sh
+
     - name: Start
-      run: |
-        chmod +x ./scripts/up.sh
-        ./scripts/up.sh -d
+      run: ./scripts/up.sh -d
 
     - name: Composer      
-      run: |
-        chmod +x ./scripts/composer.sh
-        ./scripts/composer.sh install
+      run: ./scripts/composer.sh install
       

@@ -2,6 +2,8 @@
 > This is a simple project that aims to build a template for a 
 > *Dockerize web development environment with NginX, MySQL, PHP, and Laravel*.
 
+![CI BUILD](https://github.com/nspalo/docker-laravel-template/actions/workflows/build.yml/badge.svg)
+
 ## Web Stack
 **Docker containers**
 - nginx

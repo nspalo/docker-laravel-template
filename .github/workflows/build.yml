@@ -44,7 +44,7 @@ jobs:
     # NPM
     - name: Run NPM
       run: |
-        ./scripts/run.sh npm ci --force
+        ./scripts/run.sh npm install
         ./scripts/run.sh npm run build
 
     # Code Quality Check

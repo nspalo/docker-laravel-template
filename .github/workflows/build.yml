@@ -45,7 +45,7 @@ jobs:
     - name: Run NPM
       run: |
         ./scripts/run.sh npm install --loglevel=error
-        ./scripts/run.sh npm run mix
+        ./scripts/run.sh npm run development
 
     # Code Quality Check
     - name: Run PhpStan

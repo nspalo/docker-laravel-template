@@ -94,7 +94,7 @@ services:
     networks:
       - web-app
     container_name: npm
-    image: node:20.6-alpine
+    image: node:16-alpine
     working_dir: /var/www/html
     volumes:
       - "${PATH_PROJECT_SOURCE}:/var/www/html"

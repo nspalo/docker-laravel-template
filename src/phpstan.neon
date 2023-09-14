@@ -1,9 +1,0 @@
-parameters:
-    level: 7
-    paths:
-        - app
-        - tests
-
-    ignoreErrors:
-    # TODO: Laravel 8 - PhpStan Errors
-    - '/Method App\\Http\\Middleware\\RedirectIfAuthenticated::handle\(\) has parameter \$guards with no type specified./'

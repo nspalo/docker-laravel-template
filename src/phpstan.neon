@@ -5,5 +5,6 @@ parameters:
         - tests
 
     ignoreErrors:
-    # TODO: Laravel 8 - PhpStan Errors
+    # TODO: Laravel 9 Error
+    - '/Method App\\Http\\Middleware\\Authenticate::redirectTo\(\) should return string\|null but return statement is missing./'
     - '/Method App\\Http\\Middleware\\RedirectIfAuthenticated::handle\(\) has parameter \$guards with no type specified./'

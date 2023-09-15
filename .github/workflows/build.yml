@@ -40,7 +40,8 @@ jobs:
     - name: Run Composer
       run: |
         ./scripts/composer.sh install
-        ./scripts/composer.sh dump-autoload
+        ./scripts/composer.sh run post-root-package-install
+        ./scripts/composer.sh run post-create-project-cmd
 
     # NPM
     - name: Run NPM

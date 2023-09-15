@@ -7,6 +7,7 @@ on:
     branches: [ "master", "development" ]
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
 
@@ -39,15 +40,14 @@ jobs:
     - name: Run Composer
       run: |
         ./scripts/composer.sh install
-        ./scripts/composer.sh dump-autoload
         ./scripts/composer.sh run post-root-package-install
         ./scripts/composer.sh run post-create-project-cmd
 
     # NPM
     - name: Run NPM
       run: |
-        ./scripts/run.sh npm install --loglevel=error
-        ./scripts/run.sh npm run development
+        ./scripts/run.sh npm install
+        ./scripts/run.sh npm run build
 
     # Code Quality Check
     - name: Run PhpStan

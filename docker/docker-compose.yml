@@ -34,7 +34,7 @@ services:
     build:
       context: .
       dockerfile: containers/php/Dockerfile
-    image: php:php-8.1-fpm-alpine
+    image: php:php-8.2-fpm-alpine
     ports:
       - "9000:9000"
     volumes:
@@ -110,7 +110,7 @@ services:
     build:
       context: .
       dockerfile: containers/php/Dockerfile
-    image: artisan:laravel-8
+    image: artisan:laravel-9
     links:
       - php
       - database

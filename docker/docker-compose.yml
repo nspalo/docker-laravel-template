@@ -38,6 +38,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
+      - "${PATH_PROJECT_SOURCE}:/usr/local/etc/php/php.ini"
       - "${PATH_PROJECT_SOURCE}:/var/www/html"
 
   # +----------------------+ #

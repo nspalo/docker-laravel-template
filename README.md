@@ -53,7 +53,7 @@
 ```
 
 ### Step 5: Accessing the site
-Hit the browser at `localhost:8080`
+Hit the browser at `localhost`
 
 ----
 

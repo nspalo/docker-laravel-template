@@ -170,7 +170,7 @@ endif
 # LARAVEL (Artisan)
 # ===========================================================================
 
-.PHONY: artisan migrate seed fresh
+.PHONY: artisan migrate seed fresh setup key-generate route-list cache-clear
 
 artisan: ## Run Artisan commands (usage: make artisan cmd="migrate")
 ifndef cmd
@@ -186,6 +186,23 @@ seed: ## Run database seeders
 
 fresh: ## Drop all tables and re-run migrations + seeders
 	$(DOCKER_COMPOSE) run --rm artisan migrate:fresh --seed
+
+setup: ## First-time Laravel setup (env, key, migrations)
+	@cp -n src/.env.example src/.env 2>/dev/null || true
+	$(DOCKER_COMPOSE) run --rm artisan key:generate
+	$(DOCKER_COMPOSE) run --rm artisan migrate
+
+key-generate: ## Generate application key
+	$(DOCKER_COMPOSE) run --rm artisan key:generate
+
+route-list: ## List all registered routes
+	$(DOCKER_COMPOSE) run --rm artisan route:list
+
+cache-clear: ## Clear all Laravel caches (config, route, view, app)
+	$(DOCKER_COMPOSE) run --rm artisan config:clear
+	$(DOCKER_COMPOSE) run --rm artisan route:clear
+	$(DOCKER_COMPOSE) run --rm artisan view:clear
+	$(DOCKER_COMPOSE) run --rm artisan cache:clear
 
 # ===========================================================================
 # MONITORING & DEBUGGING

@@ -41,14 +41,8 @@ make npm cmd="install"
 
 ### Step 2: Laravel Setup
 ```bash
-# Copy Laravel .env file
-make composer cmd="run post-root-package-install"
-
-# Generate application key
-make artisan cmd="key:generate"
-
-# Run database migrations
-make migrate
+# One command handles: copy .env, generate key, run migrations
+make setup
 ```
 
 ### Step 3: Build Frontend Assets
@@ -58,6 +52,12 @@ make npm cmd="run build"
 
 ### Step 4: Access the Site
 Hit the browser at `http://localhost` (or whatever `APP_PORT` is set to in `config.env`)
+
+Optionally, update your host file for a custom local domain:
+```
+127.0.0.1 my-laravel-app.local
+```
+Then access via `http://my-laravel-app.local` instead of `localhost`.
 
 ## Configuration
 
@@ -75,14 +75,15 @@ APP_PORT=80               # Web server port
 ## Commands
 
 ```bash
+# Container Management
 make build                # Build all Docker images
-make up                   # Start services (detached)
-make up-build             # Build and start in one command
-make down                 # Stop and remove containers
-make down-v               # Stop, remove containers and volumes
+make up                   # Start services in detached mode
+make rebuild              # Force recreate and rebuild all services
 make restart              # Restart all services
-make logs                 # Follow logs from all containers
-make ps                   # List running containers
+make down                 # Stop and remove containers, networks
+make down-v               # Stop, remove containers, networks, and volumes
+make stop                 # Stop running services without removing them
+make reset                # Full reset — tear down everything, rebuild
 make shell                # Open a shell in the PHP container
 
 # Package Managers
@@ -91,16 +92,23 @@ make composer cmd="dump-autoload"
 make npm cmd="install"
 make npm cmd="run build"
 
-# Laravel / Artisan
+# Laravel
 make artisan cmd="migrate"
 make artisan cmd="key:generate"
 make artisan cmd="make:model Post -m"
-make migrate              # Shortcut: run migrations
-make seed                 # Shortcut: run seeders
-make fresh                # Shortcut: migrate:fresh --seed
+make setup                # First-time setup (env, key, migrations)
+make migrate              # Run database migrations
+make seed                 # Run database seeders
+make fresh                # Drop all tables, re-run migrations + seeders
+make cache-clear          # Clear all Laravel caches
+make route-list           # List all registered routes
+
+# Monitoring & Debugging
+make logs                 # View logs from all containers (follow mode)
+make ps                   # List running containers with status
+make info                 # Display current environment and configuration
 
 # Maintenance
-make prune                # Remove ALL Docker resources (dangerous)
 make clean                # Stop services, remove volumes, prune images
 ```
 
@@ -154,12 +162,3 @@ my-laravel-app/
 | `prod` | `docker-compose.prod.yml` | Locked down, resource limits, health checks |
 
 Change environment by editing `SYS_ENV` in `docker/environments/config.env`.
-
-## Host File
-
-Optionally, update your host file:
-```
-127.0.0.1 my-laravel-app.local
-```
-
-Then access via `http://my-laravel-app.local` instead of `localhost`.

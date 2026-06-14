@@ -39,7 +39,7 @@ jobs:
 
     # Smoke test — verify PHP is running
     - name: Smoke Test
-      run: make exec c=php cmd="php -v"
+      run: docker exec docker_laravel_php php -v
 
     # Teardown routine, clean after yourself!
     - name: Teardown

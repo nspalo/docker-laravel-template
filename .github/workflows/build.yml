@@ -27,7 +27,10 @@ jobs:
 
     # Set up environment file for Docker Compose
     - name: Set up environment
-      run: cp docker/environments/dev.env.example docker/environments/dev.env
+      run: |
+        cp docker/environments/dev.env.example docker/environments/dev.env
+        mkdir -p src/storage/logs src/storage/framework/{cache,sessions,views} src/bootstrap/cache
+        sudo chown -R 1000:1000 src/storage src/bootstrap/cache
 
     # Building Docker Images
     - name: Build Docker Images
@@ -37,9 +40,13 @@ jobs:
     - name: Start Docker Containers
       run: make up
 
-    # Smoke test — verify PHP is running
+    # Install Dependencies
+    - name: Install Composer Dependencies
+      run: make composer cmd="install --no-interaction"
+
+    # Smoke test — verify Laravel is running
     - name: Smoke Test
-      run: make exec c=php cmd="php -v"
+      run: make artisan cmd="--version"
 
     # Teardown routine, clean after yourself!
     - name: Teardown

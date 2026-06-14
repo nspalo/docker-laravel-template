@@ -37,14 +37,7 @@ services:
       - "${DB_PORT}:3306"
     tty: true
 
-  composer:
-    user: "${HOST_UID}:${HOST_GID}"
-
-  npm:
-    user: "${HOST_UID}:${HOST_GID}"
-
   artisan:
-    user: "${HOST_UID}:${HOST_GID}"
     volumes:
       - "${PATH_SOURCE_LOCAL}:${PATH_SOURCE_LIVE}"
       - vendor_data:/var/www/html/vendor

@@ -131,6 +131,56 @@ services:
       - database
     entrypoint: ['php', 'artisan']
 
+  # +------------------------------------------------------+ #
+  # | Container: Queue Worker (uncomment when needed)      | #
+  # +------------------------------------------------------+ #
+  # queue:
+  #   networks:
+  #     - web-app
+  #   container_name: ${COMPOSE_PROJECT_NAME}_queue
+  #   build:
+  #     context: .
+  #     dockerfile: containers/composer/Dockerfile
+  #     additional_contexts:
+  #       base: service:php
+  #   image: ${COMPOSE_PROJECT_NAME}/queue:latest
+  #   working_dir: /var/www/html
+  #   env_file:
+  #     - "${PATH_ENVIRONMENTS}/${SYS_ENV}.env"
+  #   volumes:
+  #     - "${PATH_SOURCE_LOCAL}:${PATH_SOURCE_LIVE}"
+  #     - vendor_data:/var/www/html/vendor
+  #   depends_on:
+  #     - php
+  #     - database
+  #   command: ['php', 'artisan', 'queue:work', '--sleep=3', '--tries=3', '--max-time=3600']
+  #   restart: unless-stopped
+
+  # +------------------------------------------------------+ #
+  # | Container: Scheduler (uncomment when needed)         | #
+  # +------------------------------------------------------+ #
+  # scheduler:
+  #   networks:
+  #     - web-app
+  #   container_name: ${COMPOSE_PROJECT_NAME}_scheduler
+  #   build:
+  #     context: .
+  #     dockerfile: containers/composer/Dockerfile
+  #     additional_contexts:
+  #       base: service:php
+  #   image: ${COMPOSE_PROJECT_NAME}/scheduler:latest
+  #   working_dir: /var/www/html
+  #   env_file:
+  #     - "${PATH_ENVIRONMENTS}/${SYS_ENV}.env"
+  #   volumes:
+  #     - "${PATH_SOURCE_LOCAL}:${PATH_SOURCE_LIVE}"
+  #     - vendor_data:/var/www/html/vendor
+  #   depends_on:
+  #     - php
+  #     - database
+  #   command: ['php', 'artisan', 'schedule:work']
+  #   restart: unless-stopped
+
 # =====================================================================
 # 3. VOLUMES
 # =====================================================================

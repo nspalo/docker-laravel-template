@@ -37,9 +37,13 @@ jobs:
     - name: Start Docker Containers
       run: make up
 
-    # Smoke test — verify PHP is running
+    # Install Dependencies
+    - name: Install Composer Dependencies
+      run: make composer cmd="install --no-interaction"
+
+    # Smoke test — verify Laravel is running
     - name: Smoke Test
-      run: docker exec docker_laravel_php php -v
+      run: make artisan cmd="--version"
 
     # Teardown routine, clean after yourself!
     - name: Teardown

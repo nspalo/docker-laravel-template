@@ -1,0 +1,30 @@
+# ===========================================
+# Docker Build Context - Ignore List
+# ===========================================
+# Keeps the build context small and prevents
+# sensitive files from leaking into images.
+
+# Version control
+.git
+.gitignore
+
+# Volumes (persistent data should never be in images)
+volumes/
+
+# Environment files with credentials
+environments/*.env
+!environments/config.env
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation (not needed in images)
+*.md
+LICENSE

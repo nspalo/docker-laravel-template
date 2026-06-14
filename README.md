@@ -1,163 +1,165 @@
 # Docker Laravel Template
-> This is a simple project that aims to build a template for a
-> *Dockerize web development environment with NginX, MySQL, PHP, and Laravel*.
+> A ready-to-use Docker LEMP stack template for Laravel development — configurable, secure by default, and structured for real-world projects.
 
 ![CI BUILD](https://github.com/nspalo/docker-laravel-template/actions/workflows/build.yml/badge.svg)
 
-## Web Stack
-**Docker containers**
-- nginx
-  - NginX stable-alpine
-- mysql
-  - MySQL 5.7.22
-- php
-  - PHP 8.1-fpm-alpine
-- composer
-  - Composer 2.6.1
-- npm
-  - Node 20.6-alpine
-- artisan
-  - Laravel ^8.0
+## Features
 
-## TLDR;
-- A Quick guide to get things up and running
+- **Multi-stage PHP build** — minimal runtime image, extensions compiled separately
+- **Compose overrides** — dev (hot-reload, debug ports) and prod (locked down, resource limits)
+- **Single config file** — one place to change PHP version, DB version, ports, environment
+- **Makefile interface** — `make help` shows all commands, no scripts to memorize
+- **Secure by default** — non-root containers, security headers, hidden files blocked, no-new-privileges
+- **Laravel-ready** — Artisan, Composer, NPM containers with proper volume handling
+- **Configurable** — PHP 8.4, MySQL 8.0, Node 20, all swappable via `config.env`
 
-### Step 1: Build and Start Services
-```
-> ./scripts/up.sh -d --build
-```
+## Quick Start
 
-### Step 2: Running Composer
-```
-> ./scripts/composer.sh install
-> ./scripts/composer.sh dump-autoload
+```bash
+# 1. Clone and enter the project
+git clone https://github.com/nspalo/docker-laravel-template.git my-laravel-app
+cd my-laravel-app
+
+# 2. Set up environment
+cp docker/environments/dev.env.example docker/environments/dev.env
+# Edit dev.env with your database credentials
+
+# 3. Build and start
+make build
+make up
 ```
 
-### Step 3: Running NPM
-```
-// Running NPM
-> ./scripts/run.sh npm install
-> ./scripts/run.sh npm run build
-```
+Run `make help` to see all available commands.
 
-### Step 4: Laravel Set-up
-```
-// Copying Laravel .env file
-> ./scripts/composer.sh run post-root-package-install
+## Running the Project
 
-// Generating key
-> ./scripts/artisan.sh key:generate
-
-// Running migrations
-> ./scripts/artisan.sh migrate
+### Step 1: Install Dependencies
+```bash
+make composer cmd="install"
+make npm cmd="install"
 ```
 
-### Step 5: Accessing the site
-Hit the browser at `localhost`
+### Step 2: Laravel Setup
+```bash
+# Copy Laravel .env file
+make composer cmd="run post-root-package-install"
 
-----
+# Generate application key
+make artisan cmd="key:generate"
 
-## More Details ...
-
-### Environment File and Configurations
-_In here, we will use a file with `.env` extension to support multi-environment set up and load the correct variable values automatically.
-For now, its just_ `local.env` but feel free to add more depending on the need like `staging.env`, `uat.env`, `test.env`, `prod.env` and the likes.
-- _see:_ `docker/environments/local.env` to set up your configs and credentials for this file.
-  - Take note that some values in this file will be use later on by laravel `.env` and our `config.env` file.
-
-The generic `.env` file `config.env` should always be used in the command and should use the variable `SYS_ENV` to set the specific environment file configuration.
-- _see:_ `docker/environments/config.env`
-
-### Docker Compose Command Structure 
-> **Note:** In this structure, we always need to add few flags for our docker composer commands to work.
-> - `--env-file` flag is the path to the environment config we want to load.
-> - `-f` flag is the path to the docker compose yaml file.  
-    > which in our case it is:
-> - `--env-file docker/environments/config.env`
-> - `-f docker/docker-compose.yml`
->
->  - _See: `docker/docker-compose.yml` for the list of service containers_
->
-> _So for our full command to build the images would look something like this_    
-> `> docker-compose --env-file docker/environments/config.env -f docker/docker-compose.yml build`
->
-> However, for ease of use and to make running of commands easy, a few scripts was prepared.  
-> The simplified version of the command above is `> ./scripts/build.sh`   
-> _See:`scripts/`_ for more info.
-
-
-### Service containers: Building, Starting, and Stopping
-```
-// Building the services/containers
-> ./scripts/build.sh
-
-// Starting the services/containers
-// - optionally add the -d (detach) flag to run in the background
-> ./scripts/up.sh -d
-
-// Or do a one-liner command for the build and start process
-> ./scripts/up.sh -d --build
-
-// Stoping the services/containers
-// - To stop a specific service add the continer name
-> ./scripts/stop.sh <_ContainerName_>
-
-// Tear down routine
-// - optionally add the -v to remove the images 
-> ./scripts/down.sh -v
+# Run database migrations
+make migrate
 ```
 
-### Packages and Dependencies
-```
-// Running NPM
-> ./scripts/run.sh npm install
-> ./scripts/run.sh npm run build
-
-// Running Composer
-> ./scripts/composer.sh install
-> ./scripts/composer.sh dump-autoload
-
-// Copying Laravel .env file
-> ./scripts/composer.sh run post-root-package-install
-
-// Generating Key
-> ./scripts/artisan.sh key:generate
-
-// Running Migration
-> ./scripts/artisan.sh migrate
+### Step 3: Build Frontend Assets
+```bash
+make npm cmd="run build"
 ```
 
-### Importing existing database data
+### Step 4: Access the Site
+Hit the browser at `http://localhost` (or whatever `APP_PORT` is set to in `config.env`)
+
+## Configuration
+
+All settings are controlled from a single file: `docker/environments/config.env`
+
+```env
+SYS_ENV=dev               # Environment: dev | staging | prod
+COMPOSE_PROJECT_NAME=docker_laravel
+PHP_VERSION=8.4           # PHP version
+DB_VERSION=8.0            # MySQL version
+NODE_VERSION=20           # Node.js version
+APP_PORT=80               # Web server port
 ```
-// First  we need to copy the .sql file for import to the container
-// docker cp <FilePath>/<SqlFile>.sql <ContainerName>:./<SqlFile>.sql
-> docker cp docker/volumes/mysql/file.sql mysql:file.sql
 
-// Then login to mysql container
-// docker exec -it <ContainerName> mysql -u<dbUsername> -p<dbPassword>
-> docker exec -it mysql mysql -udbUserDev -pdbUserDev123
+## Commands
 
-// Inside mysql, import the data
-// source <SQL_FILE>.sql
-mysql> source file.sql
+```bash
+make build                # Build all Docker images
+make up                   # Start services (detached)
+make up-build             # Build and start in one command
+make down                 # Stop and remove containers
+make down-v               # Stop, remove containers and volumes
+make restart              # Restart all services
+make logs                 # Follow logs from all containers
+make ps                   # List running containers
+make shell                # Open a shell in the PHP container
+
+# Package Managers
+make composer cmd="install"
+make composer cmd="dump-autoload"
+make npm cmd="install"
+make npm cmd="run build"
+
+# Laravel / Artisan
+make artisan cmd="migrate"
+make artisan cmd="key:generate"
+make artisan cmd="make:model Post -m"
+make migrate              # Shortcut: run migrations
+make seed                 # Shortcut: run seeders
+make fresh                # Shortcut: migrate:fresh --seed
+
+# Maintenance
+make prune                # Remove ALL Docker resources (dangerous)
+make clean                # Stop services, remove volumes, prune images
 ```
 
-### Code Quality and Testing
+## Directory Structure
+
 ```
-// Running PhpStan
-> ./scripts/composer.sh run phpstan
-
-// Running Easy Coding Standards for the entire project
-> ./scripts/composer.sh run ecs-all
-
-// Running Easy Coding Standards for App or Test ONLY
-> ./scripts/composer.sh run ecs-app
-> ./scripts/composer.sh run ecs-test
-
-// Running Auto-Fix for ecs
-> ./scripts/composer.sh run ecs-app-fix
-> ./scripts/composer.sh run ecs-test-fix
-
-// Running Automated Test with PhpUnit
-> ./scripts/composer.sh run phpunit
+my-laravel-app/
+├── docker/
+│   ├── containers/                // Service Dockerfiles and configs
+│   │   ├── nginx/
+│   │   │   ├── conf.d/default.conf
+│   │   │   └── Dockerfile
+│   │   ├── php/
+│   │   │   ├── config/
+│   │   │   │   ├── php-dev.ini
+│   │   │   │   └── php-prod.ini
+│   │   │   └── Dockerfile         // Multi-stage build
+│   │   ├── mysql/
+│   │   │   ├── conf.d/my.cnf
+│   │   │   └── Dockerfile
+│   │   └── composer/
+│   │       └── Dockerfile
+│   ├── environments/
+│   │   ├── config.env             // Single control panel
+│   │   ├── dev.env.example        // Credential templates
+│   │   ├── staging.env.example
+│   │   └── prod.env.example
+│   ├── docker-compose.yml         // Base compose (shared)
+│   ├── docker-compose.dev.yml     // Dev override (volumes, debug ports)
+│   ├── docker-compose.prod.yml    // Prod override (locked down)
+│   └── .dockerignore
+├── src/                           // Laravel application source code
+│   ├── app/
+│   ├── config/
+│   ├── database/
+│   ├── public/
+│   ├── resources/
+│   ├── routes/
+│   ├── storage/
+│   └── ...
+├── Makefile                       // Primary command interface
+└── README.md
 ```
+
+## Environments
+
+| Environment | Compose Override | Behavior |
+|-------------|----------------|----------|
+| `dev` | `docker-compose.dev.yml` | Volume mounts, all ports exposed, debug-friendly |
+| `staging` | `docker-compose.prod.yml` | Production-like, no debug ports |
+| `prod` | `docker-compose.prod.yml` | Locked down, resource limits, health checks |
+
+Change environment by editing `SYS_ENV` in `docker/environments/config.env`.
+
+## Host File
+
+Optionally, update your host file:
+```
+127.0.0.1 my-laravel-app.local
+```
+
+Then access via `http://my-laravel-app.local` instead of `localhost`.

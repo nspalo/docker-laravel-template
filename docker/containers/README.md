@@ -1,8 +1,8 @@
-# Docker Directory
-- This directory hosts all Docker related files.
+# Containers Directory
+- This directory hosts all Docker container related files.
 
 ## Directory Structure
-- Below is an overview of how the Docker directory structure looks.
+- Below is an overview of how the containers directory structure looks.
 - Add / Remove / Rename according to needs.
 ```
 my-project/                       // Main Project Directory
@@ -18,19 +18,11 @@ my-project/                       // Main Project Directory
 │   │   │   │   └── php-prod.ini  // production configuration
 │   │   │   └── Dockerfile
 │   │   ├── mysql/
-│   │   │   ├── conf.d/           // MySql Configurations
+│   │   │   ├── conf.d/           // MySQL Configurations
 │   │   │   │   └── my.cnf        // default configuration file
 │   │   │   └── Dockerfile
 │   │   └── composer/
 │   │       └── Dockerfile
-│   ├── environments/              // Environment variables
-│   │   ├── config.env             // Main config file (single control panel)
-│   │   ├── dev.env.example        // Development credentials template
-│   │   ├── staging.env.example    // Staging credentials template
-│   │   └── prod.env.example       // Production credentials template
-│   ├── docker-compose.yml         // Base Docker compose file
-│   ├── docker-compose.dev.yml     // Development override
-│   ├── docker-compose.prod.yml    // Production override
-│   └── .dockerignore              // Build context ignore list
+│   └── ...
 └── ...
 ```

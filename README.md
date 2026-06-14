@@ -27,20 +27,37 @@ cp docker/environments/dev.env.example docker/environments/dev.env
 # 3. Build and start
 make build
 make up
-
-# 4. Install dependencies
-make composer cmd="install"
-make npm cmd="install"
-
-# 5. Laravel setup
-make artisan cmd="key:generate"
-make migrate
-
-# 6. Visit the site
-# http://localhost (or whatever APP_PORT is set to in config.env)
 ```
 
 Run `make help` to see all available commands.
+
+## Running the Project
+
+### Step 1: Install Dependencies
+```bash
+make composer cmd="install"
+make npm cmd="install"
+```
+
+### Step 2: Laravel Setup
+```bash
+# Copy Laravel .env file
+make composer cmd="run post-root-package-install"
+
+# Generate application key
+make artisan cmd="key:generate"
+
+# Run database migrations
+make migrate
+```
+
+### Step 3: Build Frontend Assets
+```bash
+make npm cmd="run build"
+```
+
+### Step 4: Access the Site
+Hit the browser at `http://localhost` (or whatever `APP_PORT` is set to in `config.env`)
 
 ## Configuration
 
@@ -92,7 +109,7 @@ make clean                # Stop services, remove volumes, prune images
 ```
 my-laravel-app/
 ├── docker/
-│   ├── containers/
+│   ├── containers/                // Service Dockerfiles and configs
 │   │   ├── nginx/
 │   │   │   ├── conf.d/default.conf
 │   │   │   └── Dockerfile
@@ -100,21 +117,22 @@ my-laravel-app/
 │   │   │   ├── config/
 │   │   │   │   ├── php-dev.ini
 │   │   │   │   └── php-prod.ini
-│   │   │   └── Dockerfile          # Multi-stage build
+│   │   │   └── Dockerfile         // Multi-stage build
 │   │   ├── mysql/
 │   │   │   ├── conf.d/my.cnf
 │   │   │   └── Dockerfile
 │   │   └── composer/
 │   │       └── Dockerfile
 │   ├── environments/
-│   │   ├── config.env               # Single control panel
-│   │   ├── dev.env.example          # Credential template (dev)
-│   │   └── prod.env.example         # Credential template (prod)
-│   ├── docker-compose.yml           # Base compose (shared)
-│   ├── docker-compose.dev.yml       # Dev override (volumes, debug ports)
-│   ├── docker-compose.prod.yml      # Prod override (locked down)
+│   │   ├── config.env             // Single control panel
+│   │   ├── dev.env.example        // Credential templates
+│   │   ├── staging.env.example
+│   │   └── prod.env.example
+│   ├── docker-compose.yml         // Base compose (shared)
+│   ├── docker-compose.dev.yml     // Dev override (volumes, debug ports)
+│   ├── docker-compose.prod.yml    // Prod override (locked down)
 │   └── .dockerignore
-├── src/                             # Laravel application source
+├── src/                           // Laravel application source code
 │   ├── app/
 │   ├── config/
 │   ├── database/
@@ -123,8 +141,7 @@ my-laravel-app/
 │   ├── routes/
 │   ├── storage/
 │   └── ...
-├── Makefile                         # Primary command interface
-├── .gitignore
+├── Makefile                       // Primary command interface
 └── README.md
 ```
 
@@ -138,12 +155,11 @@ my-laravel-app/
 
 Change environment by editing `SYS_ENV` in `docker/environments/config.env`.
 
-## Security
+## Host File
 
-- Nginx and PHP containers run as non-root user (`appuser:1000`)
-- Nginx listens on unprivileged port 8080 internally
-- Production override enables read-only filesystems, `no-new-privileges`, and resource limits
-- Security headers added: X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy
-- Hidden files (`.env`, `.git`) are blocked by Nginx
-- Credentials are stored in gitignored `.env` files, only `.example` templates are committed
-- `.dockerignore` prevents secrets from leaking into build context
+Optionally, update your host file:
+```
+127.0.0.1 my-laravel-app.local
+```
+
+Then access via `http://my-laravel-app.local` instead of `localhost`.

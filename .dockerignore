@@ -1,0 +1,39 @@
+# ===========================================
+# Docker Build Context - Ignore List (Project Root)
+# ===========================================
+# Used when building with project root as context (production builds).
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Docker volumes and env secrets
+docker/volumes/
+docker/environments/*.env
+!docker/environments/config.env
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation (not needed in images)
+*.md
+LICENSE
+
+# Node modules and vendor (installed inside container)
+src/node_modules/
+src/vendor/
+
+# Laravel local files
+src/.env
+src/storage/logs/*
+src/storage/framework/cache/*
+src/storage/framework/sessions/*
+src/storage/framework/views/*

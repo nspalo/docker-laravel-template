@@ -1,0 +1,47 @@
+# ===========================================================================
+# DEVELOPMENT OVERRIDE
+# ---------------------------------------------------------------------------
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+#
+# This override adds:
+#   - Volume mounts for hot-reload (source code changes reflect immediately)
+#   - Exposed debug ports (PHP, MySQL accessible from host)
+#   - Nginx config mounted for live editing
+#   - Nginx logs volume for debugging
+#   - HOST_UID/HOST_GID for file permission alignment
+# ===========================================================================
+
+services:
+  webserver:
+    ports:
+      - "${APP_PORT}:8080"
+    volumes:
+      - "${PATH_CONTAINERS}/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf"
+      - nginx_logs:/var/log/nginx
+      - "${PATH_SOURCE_LOCAL}:${PATH_SOURCE_LIVE}"
+      - vendor_data:/var/www/html/vendor
+      - node_modules_data:/var/www/html/node_modules
+
+  php:
+    build:
+      target: runtime
+    ports:
+      - "${PHP_PORT}:9000"
+    volumes:
+      - "${PATH_CONTAINERS}/php/config/php-${SYS_ENV}.ini:/usr/local/etc/php/conf.d/99-custom.ini"
+      - "${PATH_SOURCE_LOCAL}:${PATH_SOURCE_LIVE}"
+      - vendor_data:/var/www/html/vendor
+
+  database:
+    ports:
+      - "${DB_PORT}:3306"
+    tty: true
+
+  artisan:
+    volumes:
+      - "${PATH_SOURCE_LOCAL}:${PATH_SOURCE_LIVE}"
+      - vendor_data:/var/www/html/vendor
+
+volumes:
+  nginx_logs:
+    driver: local

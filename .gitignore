@@ -1,30 +1,50 @@
-# Environment
+# ==================================
+# IDE & Editor
+# ==================================
 /.idea
-/.vagrant
-.phpunit.result.cache
+/.vscode
+*.swp
+*.swo
+
+# ==================================
+# OS Files
+# ==================================
+.DS_Store
+Thumbs.db
+
+# ==================================
+# Docker - Environment secrets
+# ==================================
+# Credential files (only .example files are committed)
+docker/environments/dev.env
+docker/environments/staging.env
+docker/environments/prod.env
+
+# ==================================
+# Node / NPM
+# ==================================
+node_modules/
 npm-debug.log
 yarn-error.log
-Homestead.yaml
-Homestead.json
-node_modules/
-/src/storage/*.key
+
+# ==================================
+# PHP / Composer
+# ==================================
 /src/vendor/
+.phpunit.result.cache
 
-# Laravel 4 specific
-/src/app/storage/
-/src/bootstrap/compiled.php
-/src/bootstrap/cache
-
-# Laravel 5 & Lumen specific
+# ==================================
+# Laravel
+# ==================================
+/src/.env
+/src/storage/*.key
+/src/bootstrap/cache/*.php
 /src/public/hot
 /src/public/storage
 
-# Laravel 5 & Lumen specific with changed public path
-/src/public_html/hot
-/src/public_html/storage
-
-# MySQL
-/docker/volumes/mysql/
-
-# Project
-.env
+# ==================================
+# Legacy (Vagrant / Homestead)
+# ==================================
+/.vagrant
+Homestead.yaml
+Homestead.json

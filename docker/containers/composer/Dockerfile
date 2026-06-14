@@ -1,10 +1,16 @@
-# Pull from PHP from previous Dockerfile - php/Dockerfile
-# - see docker/docker-compose.yml for more info
-# - use the image tag php:php-8.1-fpm-alpine
-FROM php:php-8.2-fpm-alpine
+# =====================================================================
+# Composer Dockerfile
+# ---------------------------------------------------------------------
+# docker/containers/composer/Dockerfile
+#
+# This image reuses the PHP service (via additional_contexts in docker-compose.yml)
+# which already includes Composer from the multi-stage build.
+# This Dockerfile simply sets up the working directory and ensures the entrypoint is ready.
+# =====================================================================
 
-# Install Composer 2.6.1
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.6.1
+# Use the PHP service image as the base (defined in docker-compose.yml
+# via additional_contexts -> base: service:php)
+FROM base AS composer_base
 
-# Add composer bin files path to environment variable
-RUN export PATH=$PATH":/usr/bin"
+# Set working directory
+WORKDIR /var/www/html

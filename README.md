@@ -1,5 +1,5 @@
 # Docker Laravel Template
-> A ready-to-use Docker LEMP stack template for Laravel development — configurable, secure by default, and structured for real-world projects.
+> A Docker LEMP stack template for Laravel development — production-ready, configurable, and structured for real-world projects.
 
 ![CI BUILD](https://github.com/nspalo/docker-laravel-template/actions/workflows/build.yml/badge.svg)
 

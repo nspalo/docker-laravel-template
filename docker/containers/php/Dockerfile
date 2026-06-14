@@ -4,8 +4,9 @@
 # docker/containers/php/Dockerfile
 #
 # Stages:
-#   1. builder  — Compiles extensions, installs tools (Composer)
-#   2. runtime  — Minimal production-ready image
+#   1. builder    — Compiles extensions, installs tools (Composer)
+#   2. runtime    — Base image for development (code mounted via volumes)
+#   3. production — Self-contained image with code baked in
 #=====================================================================
 
 # =====================================================================
@@ -57,8 +58,8 @@ COPY --from=composer:2.8 /usr/bin/composer /usr/local/bin/composer
 # =====================================================================
 # Stage 2: Runtime
 # ---------------------------------------------------------------------
-# Minimal image that runs in development and production.
-# Contains only what's needed to EXECUTE PHP code.
+# Base image for development. In dev, source code is mounted via volumes.
+# This stage is also the foundation for the production stage.
 # =====================================================================
 FROM php:${PHP_VERSION}-fpm-alpine AS runtime
 
@@ -116,3 +117,33 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD php-fpm -t || exit 1
 
 CMD ["php-fpm"]
+
+# =====================================================================
+# Stage 3: Production
+# ---------------------------------------------------------------------
+# Self-contained image with source code and vendor dependencies baked in.
+# No volume mounts needed — deploy this image directly.
+#
+# Build with: docker compose -f docker-compose.yml -f docker-compose.prod.yml build
+# =====================================================================
+FROM runtime AS production
+
+# Switch to root temporarily to copy files with correct ownership
+USER root
+
+# Copy application source code
+COPY --chown=appuser:appuser ./src /var/www/html
+
+# Copy production PHP config (build context is project root in prod)
+COPY ./docker/containers/php/config/php-prod.ini /usr/local/etc/php/conf.d/99-custom.ini
+
+# Install production dependencies only (no dev packages)
+RUN composer install --no-dev --no-interaction --optimize-autoloader --no-scripts \
+    && chown -R appuser:appuser /var/www/html/vendor
+
+# Ensure Laravel storage and cache are writable
+RUN chown -R appuser:appuser /var/www/html/storage \
+    && chown -R appuser:appuser /var/www/html/bootstrap/cache
+
+# Switch back to non-root user
+USER appuser

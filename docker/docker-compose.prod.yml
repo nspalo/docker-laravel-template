@@ -38,7 +38,9 @@ services:
 
   php:
     build:
-      target: runtime
+      context: ..
+      dockerfile: docker/containers/php/Dockerfile
+      target: production
       args:
         PHP_VERSION: "${PHP_VERSION}"
         SYS_ENV: "${SYS_ENV}"
